@@ -18,6 +18,15 @@ const movieSchema = new mongoose.Schema({
 
 const Movie = mongoose.model('Movie', movieSchema);
 
+// Movie.deleteMany({})
+//     .then(data => {
+//         console.log('Movies deleted successfully');
+//         console.log(data);
+//     })
+//     .catch(err => {
+//         console.error('Error deleting movies:', err);
+//     });
+
 Movie.insertMany([
     {
         title: 'The Shawshank Redemption',
