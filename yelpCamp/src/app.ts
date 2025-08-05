@@ -1,10 +1,16 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const app = express();
 
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 app.set('view engine', 'ejs');
-app.set('views', './src/views');
+app.set('views', path.join(__dirname, 'views'));
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
