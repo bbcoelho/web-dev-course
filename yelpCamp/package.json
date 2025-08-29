@@ -7,7 +7,7 @@
         "prebuild": "rm -rf dist",
         "build": "tsc && cp -r src/views dist/views",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon --exec ts-node src/app.ts",
+        "dev": "nodemon --exec tsx src/app.ts",
         "cont": "docker build -t yelp-camp:latest . && docker run -p 3000:3000 yelp-camp:latest"
     },
     "keywords": [],
@@ -22,7 +22,7 @@
     "devDependencies": {
         "@types/express": "^5.0.3",
         "nodemon": "^3.1.10",
-        "ts-node": "^10.9.2",
+        "tsx": "^4.20.5",
         "typescript": "^5.9.2"
     }
 }
