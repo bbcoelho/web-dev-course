@@ -2,7 +2,18 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import mongoose from 'mongoose';
 
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://mongodb:27017/yelpCamp';
+
+mongoose.connect(MONGO_URI)
+    .then(() => {
+        console.log('CONNECTED TO DB:', MONGO_URI);
+    })
+    .catch(err => {
+        console.error('Error connecting to DB:', err);
+    });
+    
 const app = express();
 
 // Get __dirname equivalent in ES modules
@@ -19,12 +30,3 @@ app.listen(3000, () => {
 app.get('/', (req, res) => {
     res.render('home');
 });
-
-// use `mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-// mongoose.connect('mongodb://127.0.0.1:27017/movieApp')
-//     .then(() => {
-//         console.log('CONNECTED TO DB');
-//     })
-//     .catch(err => {
-//         console.error('Error connecting to DB:', err);
-//     });
