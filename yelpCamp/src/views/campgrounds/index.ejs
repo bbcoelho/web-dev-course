@@ -9,7 +9,7 @@
         <h1>Campgrounds</h1>
         <ul>
             <% for (const campground of campgrounds) { %>
-                <li><%= campground.name %></li>
+                <li><a href="/campgrounds/<%= campground._id %>"><%= campground.name %></a></li>
             <% } %>
         </ul>
     </head>
