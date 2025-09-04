@@ -6,11 +6,12 @@
         <title>Campgrounds</title>
     </head>
     <body>
-        <h1>Campgrounds</h1>
+        <h1>All Campgrounds</h1>
+        <a href="/campgrounds/new">Add New Campground</a>
         <ul>
             <% for (const campground of campgrounds) { %>
                 <li><a href="/campgrounds/<%= campground._id %>"><%= campground.name %></a></li>
             <% } %>
         </ul>
-    </head>
+    </body>
 </html>
