@@ -22,17 +22,21 @@
     "dependencies": {
         "ejs": "^3.1.10",
         "express": "^5.1.0",
+        "method-override": "^3.0.0",
         "mongoose": "^8.17.0"
     },
     "devDependencies": {
         "@types/express": "^5.0.3",
+        "@types/method-override": "^3.0.0",
         "npm-watch": "^0.13.0",
         "tsx": "^4.20.5",
         "typescript": "^5.9.2"
     },
     "watch": {
         "restart": {
-            "patterns": ["src"],
+            "patterns": [
+                "src"
+            ],
             "extensions": "ts,js,ejs",
             "quiet": true
         }
