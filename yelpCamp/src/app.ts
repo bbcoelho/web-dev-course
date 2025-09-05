@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import mongoose from 'mongoose';
 import { Campground } from './models/campground.js';
+import methodOverride from 'method-override';
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/yelpCamp';
 mongoose.connect(MONGO_URI);
@@ -24,6 +25,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 app.listen(3000, () => {
     console.log('SERVER IS RUNNING ON PORT 3000');
@@ -60,3 +62,21 @@ app.get('/campgrounds/:id', async (req, res) => {
     }
     res.render('campgrounds/show', { campground });
 });
+
+// Show edit campground form
+app.get('/campgrounds/:id/edit', async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    if (!campground) {
+        return res.status(404).send('Campground not found');
+    }
+    res.render('campgrounds/edit', { campground });
+});
+
+// Update a campground
+app.put('/campgrounds/:id', async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    res.redirect(`/campgrounds/${campground?._id}`);
+});
+
