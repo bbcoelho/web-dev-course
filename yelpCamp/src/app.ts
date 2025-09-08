@@ -5,6 +5,7 @@ import { dirname } from 'path';
 import mongoose from 'mongoose';
 import { Campground } from './models/campground.js';
 import methodOverride from 'method-override';
+import morgan from 'morgan';
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/yelpCamp';
 mongoose.connect(MONGO_URI);
@@ -24,6 +25,7 @@ const __dirname = dirname(__filename);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'views/images')));
