@@ -1,46 +1,47 @@
 {
-    "name": "yelpCamp",
-    "version": "1.0.0",
-    "description": "",
-    "main": "app.js",
-    "scripts": {
-        "prebuild": "rm -rf dist",
-        "build": "tsc && cp -r src/views dist/views",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "npm-watch restart",
-        "restart": "npm run down && npm run up",
-        "up": "docker-compose up --build",
-        "down": "docker-compose down",
-        "logs": "docker-compose logs -f",
-        "mongo": "docker exec -it yelpcamp-mongodb mongosh yelpCamp",
-        "seed": "docker exec yelpcamp-app node dist/seeds/index.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "type": "module",
-    "dependencies": {
-        "ejs": "^3.1.10",
-        "express": "^5.1.0",
-        "method-override": "^3.0.0",
-        "mongoose": "^8.17.0",
-        "morgan": "^1.10.1"
-    },
-    "devDependencies": {
-        "@types/express": "^5.0.3",
-        "@types/method-override": "^3.0.0",
-        "@types/morgan": "^1.9.10",
-        "npm-watch": "^0.13.0",
-        "tsx": "^4.20.5",
-        "typescript": "^5.9.2"
-    },
-    "watch": {
-        "restart": {
-            "patterns": [
-                "src"
-            ],
-            "extensions": "ts,js,ejs",
-            "quiet": true
-        }
+  "name": "yelpCamp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc && cp -r src/views dist/views",
+    "dev": "npm-watch restart",
+    "restart": "npm run down && npm run up",
+    "up": "docker-compose up --build",
+    "down": "docker-compose down",
+    "logs": "docker-compose logs -f",
+    "mongo": "docker exec -it yelpcamp-mongodb mongosh yelpCamp",
+    "seed": "docker exec yelpcamp-app node dist/seeds/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.17.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/express": "^5.0.3",
+    "@types/method-override": "^3.0.0",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.3.1",
+    "npm-watch": "^0.13.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  },
+  "watch": {
+    "restart": {
+      "patterns": [
+        "src", "tests" 
+      ],
+      "extensions": "ts,js,ejs",
+      "quiet": true
     }
+  }
 }
