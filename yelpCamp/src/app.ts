@@ -89,3 +89,8 @@ app.delete('/campgrounds/:id', async (req, res) => {
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 });
+
+// 404
+app.use((req, res) => {
+    res.status(404).send('NOT FOUND!');
+});
