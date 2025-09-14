@@ -2,10 +2,14 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { createRequire } from 'module';
 import mongoose from 'mongoose';
 import { Campground } from './models/campground.js';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
+
+const require = createRequire(import.meta.url);
+const ejsMate = require('ejs-mate');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/yelpCamp';
 mongoose.connect(MONGO_URI);
@@ -22,6 +26,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
