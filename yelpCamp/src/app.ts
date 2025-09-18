@@ -11,7 +11,7 @@ import morgan from 'morgan';
 const require = createRequire(import.meta.url);
 const ejsMate = require('ejs-mate');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/yelpCamp';
+const MONGO_URI = 'mongodb+srv://bbcoelho_db_user:k4SXdrcbjcdx7bAo@cluster0.pve7jcd.mongodb.net/yelpCamp?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(MONGO_URI);
 
 const db = mongoose.connection;
