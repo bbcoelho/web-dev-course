@@ -5,15 +5,13 @@
   "main": "app.js",
   "scripts": {
     "tests": "npx playwright test",
-    "prebuild": "rm -rf dist",
     "build": "tsc && cp -r src/views dist/views && cp -r src/public dist/public",
     "dev": "npm-watch restart",
     "restart": "npm run down && npm run up",
-    "up": "docker-compose up --build",
-    "down": "docker-compose down",
-    "logs": "docker-compose logs -f",
-    "mongo": "docker exec -it yelpcamp-mongodb mongosh yelpCamp",
-    "seed": "docker exec yelpcamp-app node dist/seeds/index.js"
+    "up": "docker build -t yelp-camp:latest . && docker run -p 3000:3000 --name yelp-camp yelp-camp:latest",
+    "down": "docker rm -f yelp-camp 2>/dev/null",
+    "logs": "docker logs -f yelp-camp",
+    "seed": "docker exec yelp-camp node dist/seeds/index.js"
   },
   "keywords": [],
   "author": "",
