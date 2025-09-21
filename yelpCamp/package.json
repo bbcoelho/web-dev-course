@@ -8,7 +8,7 @@
     "build": "tsc && cp -r src/views dist/views && cp -r src/public dist/public",
     "dev": "npm-watch restart",
     "restart": "npm run down && npm run up",
-    "up": "docker build -t yelp-camp:latest . && docker run -p 3000:3000 --name yelp-camp yelp-camp:latest",
+    "up": "docker build -t yelp-camp:latest . && docker run --env-file .env -p 3000:3000 --name yelp-camp yelp-camp:latest",
     "down": "docker rm -f yelp-camp 2>/dev/null",
     "logs": "docker logs -f yelp-camp",
     "seed": "docker exec yelp-camp node dist/seeds/index.js"
@@ -31,6 +31,7 @@
     "@types/method-override": "^3.0.0",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.3.1",
+    "dotenv": "^17.2.2",
     "npm-watch": "^0.13.0",
     "typescript": "^5.9.2"
   },

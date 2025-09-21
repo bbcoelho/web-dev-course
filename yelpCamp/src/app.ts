@@ -7,11 +7,13 @@ import mongoose from 'mongoose';
 import { Campground } from './models/campground.js';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
+import dotenv from 'dotenv';
 
 const require = createRequire(import.meta.url);
 const ejsMate = require('ejs-mate');
+dotenv.config();
 
-const MONGO_URI = 'mongodb+srv://bbcoelho_db_user:k4SXdrcbjcdx7bAo@cluster0.pve7jcd.mongodb.net/yelpCamp?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = `mongodb+srv://bbcoelho_db_user:${process.env.MONGO_PASSWORD}@cluster0.pve7jcd.mongodb.net/yelpCamp?retryWrites=true&w=majority&appName=Cluster0`;
 mongoose.connect(MONGO_URI);
 
 const db = mongoose.connection;
