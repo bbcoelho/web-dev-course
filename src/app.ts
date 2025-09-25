@@ -16,6 +16,12 @@ dotenv.config();
 const MONGO_URI = `mongodb+srv://bbcoelho_db_user:${process.env.MONGO_PASSWORD}@cluster0.pve7jcd.mongodb.net/yelpCamp?retryWrites=true&w=majority&appName=Cluster0`;
 mongoose.connect(MONGO_URI);
 
+if (process.env.NODE_ENV === 'development') {
+    console.log(`${process.env.SECRET1} in development`);
+} else {
+    console.log(`${process.env.SECRET2}`);
+}
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'CONNECTION ERROR:'));
 db.once('open', () => {
