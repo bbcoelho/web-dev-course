@@ -1,0 +1,55 @@
+name: Pull Request Tests
+
+on:
+  pull_request:
+    branches: [master, staging]
+  workflow_dispatch:  # Allow manual trigger for testing
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t yelp-camp:test .
+
+      - name: Start app container
+        run: |
+          docker run -d \
+            --name app-container \
+            -p 3000:3000 \
+            -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
+            -e NODE_ENV="test" \
+            yelp-camp:test
+
+      - name: Wait for application to be ready
+        run: |
+          echo "Waiting for app to start..."
+          timeout 60 bash -c '
+            until curl -f http://localhost:3000 > /dev/null 2>&1; do 
+              echo "App not ready, waiting..."
+              sleep 3
+            done
+          '
+          echo "App is ready!"
+
+      - name: Run tests
+        run: |
+          docker exec app-container npm run tests
+
+      - name: Stop and remove containers
+        if: always()
+        run: |
+          docker stop app-container || true
+          docker rm app-container || true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

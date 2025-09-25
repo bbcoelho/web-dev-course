@@ -1,18 +1,4 @@
-FROM node:20-alpine
-
-# Install dependencies for Playwright browsers
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    freetype-dev \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont
-
-# Set Playwright to use installed Chromium
-ENV PLAYWRIGHT_BROWSERS_PATH=/usr/bin/chromium-browser
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+FROM node:20-bullseye
 
 WORKDIR /app
 
@@ -21,6 +7,9 @@ COPY package-lock.json* .
 
 # Install all dependencies including devDependencies for tests
 RUN npm ci
+
+# Install Playwright browsers and system dependencies
+RUN npx playwright install --with-deps
 
 COPY ./src ./src
 COPY ./tests ./tests
