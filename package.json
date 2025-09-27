@@ -14,7 +14,9 @@
     "up:dev": "docker build -t yelp-camp:latest . && docker run --env NODE_ENV=development --env-file .env -p 3000:3000 --name yelp-camp yelp-camp:latest",
     "down": "docker rm -f yelp-camp 2>/dev/null",
     "logs": "docker logs -f yelp-camp",
-    "seed": "docker exec yelp-camp node dist/seeds/index.js"
+    "seed": "docker exec yelp-camp node dist/seeds/index.js",
+    "sync-secrets": "gh secret set -f .env",
+    "check-secrets": "gh secret list"
   },
   "keywords": [],
   "author": "",

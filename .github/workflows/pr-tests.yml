@@ -22,7 +22,8 @@ jobs:
             --name app-container \
             -p 3000:3000 \
             -e MONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
-            -e NODE_ENV="test" \
+            -e DEV_DB="${{ secrets.DEV_DB }}" \
+            -e NODE_ENV="development" \
             yelp-camp:test
 
       - name: Wait for application to be ready
