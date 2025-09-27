@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "tests": "npx playwright test",
+    "prebuild": "rm -rf dist",
     "build": "tsc && cp -r src/views dist/views && cp -r src/public dist/public",
     "dev": "npm-watch restart",
     "start": "npm run down && npm run up:prod",
