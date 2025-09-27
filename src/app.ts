@@ -13,7 +13,19 @@ const require = createRequire(import.meta.url);
 const ejsMate = require('ejs-mate');
 dotenv.config();
 
-const MONGO_URI = `mongodb+srv://bbcoelho_db_user:${process.env.MONGO_PASSWORD}@cluster0.pve7jcd.mongodb.net/yelpCamp?retryWrites=true&w=majority&appName=Cluster0`;
+// set environment variables
+let DB_NAME: string | undefined;
+if (process.env.NODE_ENV === 'development') {
+    DB_NAME = process.env.DEV_DB;
+} else {
+    DB_NAME = process.env.PROD_DB;
+}
+
+// connect to database
+if (!DB_NAME) {
+    throw new Error('DB_NAME is not set');
+}
+const MONGO_URI = `mongodb+srv://bbcoelho_db_user:${process.env.MONGO_PASSWORD}@cluster0.pve7jcd.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`;
 mongoose.connect(MONGO_URI);
 
 const db = mongoose.connection;

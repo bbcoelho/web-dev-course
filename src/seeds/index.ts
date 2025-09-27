@@ -1,7 +1,21 @@
 import mongoose from 'mongoose';
 import { Campground } from '../models/campground.js';
+import dotenv from 'dotenv';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/yelpCamp';
+dotenv.config();
+
+// set environment variables
+let DB_NAME: string | undefined;
+if (process.env.NODE_ENV === 'development') {
+    DB_NAME = process.env.DEV_DB;
+} else {
+    DB_NAME = process.env.PROD_DB;
+}
+
+if (!DB_NAME) {
+    throw new Error('DB_NAME is not set');
+}
+const MONGO_URI = `mongodb+srv://bbcoelho_db_user:${process.env.MONGO_PASSWORD}@cluster0.pve7jcd.mongodb.net/${DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`;
 
 const seedData = [
     {
