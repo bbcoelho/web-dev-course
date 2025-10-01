@@ -1,0 +1,59 @@
+services:
+  # Staging Environment
+  - type: web
+    name: yelp-camp-staging
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git  # Update this
+    branch: staging
+    region: oregon  # Choose: oregon, frankfurt, singapore
+    plan: free  # free, starter, standard, pro
+    dockerCommand: node dist/app.js
+    envVars:
+      - key: NODE_ENV
+        value: development
+      - key: MONGO_PASSWORD
+        fromSecret: MONGO_PASSWORD
+      - key: DEV_DB
+        fromSecret: DEV_DB
+      - key: PORT
+        value: 3000
+    healthCheckPath: /
+    numInstances: 1
+    autoDeploy: false  # Controlled by GitHub Actions
+
+  # Production Environment  
+  - type: web
+    name: yelp-camp-production
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git  # Update this
+    branch: master
+    region: oregon  # Choose: oregon, frankfurt, singapore
+    plan: starter  # Recommended for production
+    dockerCommand: node dist/app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_PASSWORD
+        fromSecret: MONGO_PASSWORD
+      - key: PROD_DB
+        fromSecret: PROD_DB
+      - key: PORT
+        value: 3000
+    healthCheckPath: /
+    numInstances: 1
+    autoDeploy: false  # Controlled by GitHub Actions
+
+# Environment Groups (for shared secrets)
+envVarGroups:
+  - name: database-secrets
+    envVars:
+      - key: MONGO_PASSWORD
+        fromSecret: MONGO_PASSWORD
+      - key: DEV_DB
+        value: yelpCampDev
+      - key: PROD_DB
+        value: yelpCamp
