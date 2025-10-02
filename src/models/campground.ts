@@ -32,7 +32,7 @@ const CampgroundSchema: Schema = new Schema({
     },
     image: {
         type: String,
-        default: 'https://via.placeholder.com/400x300?text=No+Image+Available'
+        default: 'https://picsum.photos/500/375'
     }
 }, {
     timestamps: true
