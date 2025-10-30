@@ -1,4 +1,5 @@
 import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -8,6 +9,8 @@ import { Campground } from './models/campground.js';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import { wrapAsync } from './presentation/helpers/wrapAsync.js';
+import { AppError } from './presentation/helpers/AppError.js';
 
 const require = createRequire(import.meta.url);
 const ejsMate = require('ejs-mate');
@@ -58,10 +61,10 @@ app.get('/', (req, res) => {
 });
 
 // Show all campgrounds
-app.get('/campgrounds', async (req, res) => {
+app.get('/campgrounds', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const campgrounds = await Campground.find({});
     res.render('campgrounds/index', { campgrounds });
-});
+}));
 
 // Show new campground form
 app.get('/campgrounds/new', (req, res) => {
@@ -69,44 +72,48 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 // Create a new campground
-app.post('/campgrounds', async (req, res) => {
+app.post('/campgrounds', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
-});
+}));
 
 // Show a specific campground
-app.get('/campgrounds/:id', async (req, res) => {
+app.get('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
         return res.status(404).send('Campground not found');
     }
     res.render('campgrounds/show', { campground });
-});
+}));
 
 // Show edit campground form
-app.get('/campgrounds/:id/edit', async (req, res) => {
+app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
         return res.status(404).send('Campground not found');
     }
     res.render('campgrounds/edit', { campground });
-});
+}));
 
 // Update a campground
-app.put('/campgrounds/:id', async (req, res) => {
+app.put('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
     res.redirect(`/campgrounds/${campground?._id}`);
-});
+}));
 
 // Delete a campground
-app.delete('/campgrounds/:id', async (req, res) => {
+app.delete('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+}));
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    res.send('Something went wrong');
 });
 
 // 404
