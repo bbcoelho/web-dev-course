@@ -1,7 +1,7 @@
-import type { NextFunction } from "express";
+import type { Request, Response, NextFunction, RequestHandler } from 'express';
 
-export default function wrapAsync(fn: (request: Request, response: Response, next: NextFunction) => Promise<unknown>) {
+export function wrapAsync(fn: (request: Request, response: Response, next: NextFunction) => Promise<unknown>): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
-        fn(request, response, next).catch(next);
+        Promise.resolve(fn(request, response, next)).catch(next);
     };
 }
