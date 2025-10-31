@@ -73,6 +73,7 @@ app.get('/campgrounds/new', (req, res) => {
 
 // Create a new campground
 app.post('/campgrounds', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.body.campground.name || !req.body.campground.price || !req.body.campground.location || !req.body.campground.image || !req.body.campground.description) throw new AppError('Invalid campground data', 400);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
@@ -82,9 +83,6 @@ app.post('/campgrounds', wrapAsync(async (req: Request, res: Response, next: Nex
 app.get('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
-    if (!campground) {
-        return res.status(404).send('Campground not found');
-    }
     res.render('campgrounds/show', { campground });
 }));
 
@@ -92,9 +90,6 @@ app.get('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: 
 app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
-    if (!campground) {
-        return res.status(404).send('Campground not found');
-    }
     res.render('campgrounds/edit', { campground });
 }));
 
