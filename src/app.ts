@@ -112,11 +112,17 @@ app.delete('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, nex
     res.redirect('/campgrounds');
 }));
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.send('Something went wrong');
+// 404
+app.use((req: Request, res: Response, next: NextFunction) => {
+    next(new AppError('Page not found', 404));
 });
 
-// 404
-app.use((req, res) => {
-    res.status(404).send('NOT FOUND!');
+// Error handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof AppError) {
+        res.status(err.statusCode);
+    } else {
+        res.status(500);
+    }
+    res.send(err.message);
 });
