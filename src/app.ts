@@ -96,6 +96,7 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, n
 // Update a campground
 app.put('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    if (!req.body.campground.name || !req.body.campground.price || !req.body.campground.location || !req.body.campground.image || !req.body.campground.description) throw new AppError('Invalid campground data', 400);
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
     res.redirect(`/campgrounds/${campground?._id}`);
 }));
