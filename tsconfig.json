@@ -29,7 +29,6 @@
         // "noPropertyAccessFromIndexSignature": true,
         // Recommended Options
         "strict": true,
-        "jsx": "react-jsx",
         "verbatimModuleSyntax": true,
         "isolatedModules": true,
         "noUncheckedSideEffectImports": true,
@@ -38,6 +37,7 @@
     },
     "exclude": [
         "playwright.config.ts",
-        "tests/**/*"
+        "tests/**/*",
+        "dist/**/*"
     ]
 }
