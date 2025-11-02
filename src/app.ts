@@ -73,7 +73,7 @@ app.get('/campgrounds/new', (req, res) => {
 
 // Create a new campground
 app.post('/campgrounds', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body.campground.name || !req.body.campground.price || !req.body.campground.location || !req.body.campground.image || !req.body.campground.description) throw new AppError('Invalid campground data', 400);
+    if (!req.body?.campground?.name || !req.body?.campground?.price || !req.body?.campground?.location || !req.body?.campground?.image || !req.body?.campground?.description) throw new AppError('Invalid campground data', 400);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
@@ -96,7 +96,7 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, n
 // Update a campground
 app.put('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    if (!req.body.campground.name || !req.body.campground.price || !req.body.campground.location || !req.body.campground.image || !req.body.campground.description) throw new AppError('Invalid campground data', 400);
+    if (!req.body?.campground?.name || !req.body?.campground?.price || !req.body?.campground?.location || !req.body?.campground?.image || !req.body?.campground?.description) throw new AppError('Invalid campground data', 400);
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
     res.redirect(`/campgrounds/${campground?._id}`);
 }));
@@ -115,10 +115,16 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log("");
+    console.log("********** ERROR **********");
     if (err instanceof AppError) {
         res.status(err.statusCode);
     } else {
         res.status(500);
     }
-    res.send(err.message);
+    console.log("Status Code: ", res.statusCode);
+    console.log(err.stack);
+    console.log("****************************");
+    console.log("");
+    res.render('error', { error: err });
 });
