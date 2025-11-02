@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import Joi from 'joi';
 
 export interface ICampground extends Document {
     name: string;
