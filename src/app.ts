@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { createRequire } from 'module';
 import mongoose from 'mongoose';
-import { Campground } from './models/campground.js';
+import validateCampground, { Campground } from './models/campground.js';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
@@ -72,8 +72,8 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 // Create a new campground
-app.post('/campgrounds', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body?.campground?.name || !req.body?.campground?.price || !req.body?.campground?.location || !req.body?.campground?.image || !req.body?.campground?.description) throw new AppError('Invalid campground data', 400);
+app.post('/campgrounds', validateCampground, wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
+    validateCampground(req, res, next);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
@@ -94,9 +94,10 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, n
 }));
 
 // Update a campground
-app.put('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
+app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Updating campground...");
     const { id } = req.params;
-    if (!req.body?.campground?.name || !req.body?.campground?.price || !req.body?.campground?.location || !req.body?.campground?.image || !req.body?.campground?.description) throw new AppError('Invalid campground data', 400);
+    validateCampground(req, res, next);
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
     res.redirect(`/campgrounds/${campground?._id}`);
 }));
