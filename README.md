@@ -14,6 +14,9 @@ A study project to learn and practice some web development techniques, trying to
 - Bootstrap
 - Embeded Javascript (ejs)
 - HTML templates (ejs-mate)
+- Front-end data validation
+- Back-end data validation
+- Custom error classes
 - Cookies and Sessions
 - Environment Variables (development and production)
 - Authentication and Passport
