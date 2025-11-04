@@ -73,7 +73,6 @@ app.get('/campgrounds/new', (req, res) => {
 
 // Create a new campground
 app.post('/campgrounds', validateCampground, wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
-    validateCampground(req, res, next);
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
@@ -97,7 +96,6 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, n
 app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     console.log("Updating campground...");
     const { id } = req.params;
-    validateCampground(req, res, next);
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
     res.redirect(`/campgrounds/${campground?._id}`);
 }));
