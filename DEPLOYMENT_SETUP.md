@@ -33,7 +33,7 @@ RENDER_PRODUCTION_SERVICE_ID=your_production_service_id
 
 ### Database Secrets (Already exist)
 ```
-MONGO_PASSWORD=U2n6uRWpInzLHm0e
+MONGO_PASSWORD=your_mongo_password
 DEV_DB=yelpCampDev
 PROD_DB=yelpCamp
 ```
@@ -65,7 +65,7 @@ PROD_DB=yelpCamp
 6. **Environment Variables:**
    ```
    NODE_ENV=development
-   MONGO_PASSWORD=U2n6uRWpInzLHm0e
+   MONGO_PASSWORD=your_mongo_password
    DEV_DB=yelpCampDev
    PORT=3000
    ```
@@ -87,7 +87,7 @@ PROD_DB=yelpCamp
 5. **Environment Variables:**
    ```
    NODE_ENV=production
-   MONGO_PASSWORD=U2n6uRWpInzLHm0e
+   MONGO_PASSWORD=your_mongo_password
    PROD_DB=yelpCamp
    PORT=3000
    ```
