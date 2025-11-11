@@ -96,7 +96,7 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req: Request, res: Response, n
 app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req: Request, res: Response, next: NextFunction) => {
     console.log("Updating campground...");
     const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     res.redirect(`/campgrounds/${campground?._id}`);
 }));
 
@@ -106,6 +106,33 @@ app.delete('/campgrounds/:id', wrapAsync(async (req: Request, res: Response, nex
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 }));
+
+app.get('/images/:imageId', async (req, res) => {
+    try {
+        const response = await fetch(`http://host.docker.internal:3001/data`);
+        if (!response.ok) {
+            return res.status(response.status).send('Image not found');
+        }
+        const contentType = response.headers.get('content-type');
+        if (contentType) {
+            res.set('Content-Type', contentType);
+        }
+        if (response.body) {
+            response.body.pipeTo(new WritableStream({
+                write(chunk) {
+                    res.write(chunk);
+                },
+                close() {
+                    res.end();
+                }
+            }));
+        } else {
+            res.status(500).send('No response body');
+        }
+    } catch (error) {
+        res.status(500).send('Error fetching image');
+    }
+});
 
 // 404
 app.use((req: Request, res: Response, next: NextFunction) => {
