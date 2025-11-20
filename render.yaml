@@ -5,7 +5,7 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git  # Update this
+    repo: https://github.com/bbcoelho/web-dev-course.git  # Update this
     branch: staging
     region: oregon  # Choose: oregon, frankfurt, singapore
     plan: free  # free, starter, standard, pro
@@ -18,10 +18,10 @@ services:
       - key: DEV_DB
         fromSecret: DEV_DB
       - key: PORT
-        value: 3000
+        value: 8080
     healthCheckPath: /
     numInstances: 1
-    autoDeploy: false  # Controlled by GitHub Actions
+    autoDeploy: true  # Controlled by GitHub Actions
 
   # Production Environment  
   - type: web
@@ -29,7 +29,7 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    repo: https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git  # Update this
+    repo: https://github.com/bbcoelho/web-dev-course.git  # Update this
     branch: master
     region: oregon  # Choose: oregon, frankfurt, singapore
     plan: starter  # Recommended for production
@@ -42,10 +42,10 @@ services:
       - key: PROD_DB
         fromSecret: PROD_DB
       - key: PORT
-        value: 3000
+        value: 8080
     healthCheckPath: /
     numInstances: 1
-    autoDeploy: false  # Controlled by GitHub Actions
+    autoDeploy: true  # Controlled by GitHub Actions
 
 # Environment Groups (for shared secrets)
 envVarGroups:
